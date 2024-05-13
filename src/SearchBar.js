@@ -5,8 +5,13 @@ const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleChange = (event) => {
-    setSearchTerm(event.target.value);
-    onSearch(event.target.value);
+    const newSearchTerm = event.target.value;
+    setSearchTerm(newSearchTerm);
+    onSearch(newSearchTerm);
+  };
+
+  const handleSearch = () => {
+    onSearch(searchTerm);
   };
 
   return (
@@ -17,7 +22,7 @@ const SearchBar = ({ onSearch }) => {
         value={searchTerm}
         onChange={handleChange}
       />
-      <button onClick={() => onSearch(searchTerm)}>Search</button>
+      <button onClick={handleSearch}>Search</button>
     </div>
   );
 };
