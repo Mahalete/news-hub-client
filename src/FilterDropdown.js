@@ -1,17 +1,22 @@
 // FilterDropdown.js
-import React from 'react';
+import React, { useState } from 'react';
 import './FilterDropdown.css';
+import Sidebar from './Sidebar';
 
-const FilterDropdown = () => {
+const FilterDropdown = ({ onSelectCategory }) => {
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  const handleSidebarToggle = () => {
+    setShowSidebar(!showSidebar);
+  };
+
   return (
-    <select className="filter-dropdown">
-      <option value="all">All Categories</option>
-      <option value="business">Business</option>
-      <option value="technology">Technology</option>
-      <option value="entertainment">Entertainment</option>
-      <option value="entertainment">Politics</option>
-      {/* Add more categories as needed */}
-    </select>
+    <div className="filter-dropdown">
+      <div className="filter-icon" onClick={handleSidebarToggle}>
+        Filter
+      </div>
+      {showSidebar && <Sidebar onSelectCategory={onSelectCategory} />}
+    </div>
   );
 };
 

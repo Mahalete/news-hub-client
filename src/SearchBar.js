@@ -1,28 +1,33 @@
 // SearchBar.js
 import React, { useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
 
 const SearchBar = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [showSearchBar, setShowSearchBar] = useState(false);
 
-  const handleChange = (event) => {
-    const newSearchTerm = event.target.value;
-    setSearchTerm(newSearchTerm);
-    onSearch(newSearchTerm);
+  const handleSearchIconClick = () => {
+    setShowSearchBar(true);
   };
 
-  const handleSearch = () => {
-    onSearch(searchTerm);
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      onSearch(event.target.value);
+      setShowSearchBar(false);
+    }
   };
 
   return (
     <div className="search-bar">
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={handleChange}
-      />
-      <button onClick={handleSearch}>Search</button>
+      {showSearchBar ? (
+        <input
+          type="text"
+          placeholder="Search..."
+          onKeyPress={handleKeyPress}
+          autoFocus
+        />
+      ) : (
+        <FaSearch className="search-icon" onClick={handleSearchIconClick} />
+      )}
     </div>
   );
 };

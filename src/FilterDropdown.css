@@ -1,14 +1,41 @@
+/* FilterDropdown.css */
+.filter-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 300px; /* Adjust the width of the sidebar as needed */
+  background-color: #fff;
+  z-index: 2; /* Ensure the sidebar is above other content */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add shadow for better visibility */
+  transition: transform 0.3s ease; /* Add transition effect for smooth animation */
+  transform: translateX(-100%); /* Initially hide the sidebar off-screen */
+}
+
+.filter-sidebar.show {
+  transform: translateX(0); /* Show the sidebar by moving it back to the original position */
+}
 
 .filter-dropdown {
-    padding: 8px 12px;
-    background-color: #007bff; /* Blue dropdown */
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .filter-dropdown:hover {
-    background-color: #0056b3; /* Darker shade of blue on hover */
-  }
-  
+  position: relative;
+}
+
+.filter-icon {
+  cursor: pointer;
+}
+
+.dropdown-arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #666; /* Adjust the color of the arrow */
+}
+
+.dropdown-menu {
+  display: none; /* Hide the dropdown menu initially */
+}
+
+.dropdown-menu.show {
+  display: block; /* Show the dropdown menu when needed */
+}

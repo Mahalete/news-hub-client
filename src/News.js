@@ -1,12 +1,14 @@
-/// News.js
+// News.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from './Header';
+import './News.css'; // Import the CSS file
 
 const News = () => {
   const [newsData, setNewsData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [showSidebar, setShowSidebar] = useState(false); // Add state for sidebar visibility
 
   useEffect(() => {
     fetchNews();
@@ -40,18 +42,29 @@ const News = () => {
     setSelectedCategory(category);
   };
 
+  const handleSidebarToggle = () => {
+    setShowSidebar(!showSidebar);
+  };
+
   return (
-    <div>
+    <div className={`news-container ${showSidebar ? 'show-sidebar' : ''}`}>
       <Header onSearch={handleSearch} onFilter={handleFilter} />
-      {newsData.length > 0 ? (
-        <ul>
-          {newsData.map((news, index) => (
-            <li key={index}>{news.title}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No news articles found.</p>
-      )}
+      <div className="news-content">
+        {newsData.length > 0 ? (
+          <ul className="news-list">
+            {newsData.map((news, index) => (
+              <li className="news-item" key={index}>
+                <a href={news.url} className="news-item-link" target="_blank" rel="noopener noreferrer">
+                  <div className="news-item-title">{news.title}</div>
+                  <div className="news-item-description">{news.description}</div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No news articles found.</p>
+        )}
+      </div>
     </div>
   );
 };
