@@ -15,7 +15,7 @@ const News = () => {
   }, [searchTerm, selectedCategory]);
 
   const fetchNews = () => {
-    let url = 'https://newsdata.io/api/1/news?country=fi&apikey=pub_43336635b2f1ccedd88c458bd9d3939ef3aaf';
+    let url = 'https://newsdata.io/api/1/latest?apikey=pub_43336635b2f1ccedd88c458bd9d3939ef3aaf&language=en,fi';
 
     if (searchTerm) {
       url += `&q=${searchTerm}`;
@@ -57,7 +57,7 @@ const News = () => {
           <ul className="news-list">
             {newsData.map((news, index) => (
               <li className="news-item" key={index}>
-                <a href={news.url} className="news-item-link" target="_blank" rel="noopener noreferrer">
+                <a href={news.link} className="news-item-link" target="_blank" rel="noopener noreferrer">
                   <div className="news-item-title">{news.title}</div>
                   <div className="news-item-description">{news.description}</div>
                 </a>
