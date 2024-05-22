@@ -1,21 +1,29 @@
-// FilterDropdown.js
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import './FilterDropdown.css';
 import Sidebar from './Sidebar';
 
 const FilterDropdown = ({ onSelectCategory }) => {
   const [showSidebar, setShowSidebar] = useState(false);
 
-  const handleSidebarToggle = () => {
+  const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
+  };
+
+  const handleCategoryChange = (category) => {
+    onSelectCategory(category);
+    setShowSidebar(false); // Close the sidebar after selecting a category
   };
 
   return (
     <div className="filter-dropdown">
-      <div className="filter-icon" onClick={handleSidebarToggle}>
-        Filter
+      {/* Filter Icon */}
+      <div className="filter-icon" onClick={toggleSidebar}>
+        <FontAwesomeIcon icon={faFilter} />
       </div>
-      {showSidebar && <Sidebar onSelectCategory={onSelectCategory} />}
+      {/* Sidebar */}
+      {showSidebar && <Sidebar onSelectCategory={handleCategoryChange} />}
     </div>
   );
 };

@@ -1,7 +1,7 @@
-// News.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from './Header';
+import FilterDropdown from './FilterDropdown'; // Import the FilterDropdown component
 import './News.css'; // Import the CSS file
 
 const News = () => {
@@ -27,6 +27,7 @@ const News = () => {
 
     axios.get(url)
       .then(response => {
+        console.log('API Response:', response.data.results); // Log the API response
         setNewsData(response.data.results);
       })
       .catch(error => {
@@ -49,6 +50,8 @@ const News = () => {
   return (
     <div className={`news-container ${showSidebar ? 'show-sidebar' : ''}`}>
       <Header onSearch={handleSearch} onFilter={handleFilter} />
+      {/* Integrate the FilterDropdown component */}
+      <FilterDropdown onSelectCategory={handleFilter} />
       <div className="news-content">
         {newsData.length > 0 ? (
           <ul className="news-list">

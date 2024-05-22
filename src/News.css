@@ -1,38 +1,41 @@
 /* News.css */
 .news-container {
-    max-width: 800px; /* Adjust the maximum width of the news container */
-    margin: 0 auto;
-    padding: 20px;
-  }
+  max-width: 650px;
+  margin: 80px auto  0; /* Adjust the margin-top value to match the height of your header */
+  padding: 10px;
+  position: relative; /* Ensure the news container maintains its position context */
+  z-index: 70; /* Set a lower z-index for the news content */
   
-  .news-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .news-item {
-    margin-bottom: 20px;
-  }
-  
-  .news-item-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  
-  .news-item-description {
-    font-size: 14px;
-    line-height: 1.5;
-  }
-  
-  /* Style links within news items */
-  .news-item-link {
-    color: #020202; /* Link color */
-    text-decoration: none;
-  }
-  
-  .news-item-link:hover {
-    text-decoration: underline; /* Underline link on hover */
-  }
-  
+}
+
+
+.news-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.news-item {
+  margin-bottom: 20px;
+}
+
+.news-item-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.news-item-description {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Style links within news items */
+.news-item-link {
+  color: #020202; /* Link color */
+  text-decoration: none;
+}
+
+.news-item-link:hover {
+  text-decoration: underline; /* Underline link on hover */
+}
