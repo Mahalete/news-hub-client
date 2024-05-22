@@ -8,8 +8,18 @@
   z-index: 2;
   overflow-y: auto;
   padding-left: 0;
-  margin-top: 100px; /* Adjust this value if needed */
+  margin-top: 100px; 
   padding-top: 20px;
+}
+.close-button {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  font-size: 20px; 
+  cursor: pointer;
+  background: none; 
+  border: none; 
+  outline: none; 
 }
   
   .sidebar ul {
