@@ -1,4 +1,3 @@
-// Sidebar.js
 import React from 'react';
 import './Sidebar.css';
 
@@ -22,3 +21,4 @@ const Sidebar = ({ onSelectCategory }) => {
 };
 
 export default Sidebar;
+
