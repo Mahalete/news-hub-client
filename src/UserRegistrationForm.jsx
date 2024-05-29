@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import './UserRegistrationForm.css'; // Import CSS file for styling
+import LoginForm from './LoginForm'; // Import LoginForm component
 
 const UserRegistrationForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showLoginForm, setShowLoginForm] = useState(false); // State to control login form visibility
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -19,7 +21,14 @@ const UserRegistrationForm = () => {
     e.preventDefault();
     setError('');
     setSuccess('');
-    
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Invalid email format');
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:5000/api/signup', {
         method: 'POST',
@@ -30,24 +39,31 @@ const UserRegistrationForm = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Sign-up failed');
+        const responseData = await response.json();
+        if (response.status === 500) {
+          setError('It appears you are already signed up. Please log in.');
+        } else {
+          const errorMessage = responseData.message || 'Sign-up failed';
+          setError(errorMessage);
+        }
+      } else {
+        setSuccess('Sign-up successful!');
+        setEmail('');
+        setPassword('');
       }
-
-      setSuccess('Sign-up successful!');
-      setEmail('');
-      setPassword('');
     } catch (error) {
       console.error('Error signing up:', error.message);
-      setError(error.message);
+      setError('Failed to sign up');
     }
   };
 
   return (
     <div className="registration-form">
+      <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="email">Email:</label>
-          <input 
+          <input
             type="email"
             id="email"
             value={email}
@@ -57,7 +73,7 @@ const UserRegistrationForm = () => {
         </div>
         <div className="form-group">
           <label htmlFor="password">Password:</label>
-          <input 
+          <input
             type="password"
             id="password"
             value={password}
@@ -66,9 +82,13 @@ const UserRegistrationForm = () => {
           />
         </div>
         <button type="submit">Sign Up</button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {success && <p style={{ color: 'green' }}>{success}</p>}
+        {error && <p className="error">{error}</p>}
+        {success && <p className="success">{success}</p>}
       </form>
+      {error && error.includes('already signed up') && (
+        <p className="login-instead">Already have an account? Please log in instead.</p>
+      )}
+      {showLoginForm && <LoginForm onClose={() => setShowLoginForm(false)} />}
     </div>
   );
 };

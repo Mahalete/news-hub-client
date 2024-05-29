@@ -3,12 +3,15 @@ import axios from 'axios';
 import Header from './Header';
 import FilterDropdown from './FilterDropdown'; // Import the FilterDropdown component
 import './News.css'; // Import the CSS file
+import { FaHeart } from 'react-icons/fa'; // Import the heart icon from react-icons
+import SignUpPrompt from './SignUpPrompt'; // Import the SignUpPrompt component
 
 const News = () => {
   const [newsData, setNewsData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showSidebar, setShowSidebar] = useState(false); // Add state for sidebar visibility
+  const [showSignUpPrompt, setShowSignUpPrompt] = useState(false); // State to control the display of the sign-up prompt
 
   useEffect(() => {
     fetchNews();
@@ -47,6 +50,18 @@ const News = () => {
     setShowSidebar(!showSidebar);
   };
 
+  const handleFavoriteClick = (index) => {
+    // Implement logic to handle favorite click
+    console.log('Favorite clicked for index:', index);
+    // Show the sign-up prompt if the user is not logged in
+    setShowSignUpPrompt(true);
+  };
+
+  const handleSignUpPromptClose = () => {
+    // Close the sign-up prompt
+    setShowSignUpPrompt(false);
+  };
+
   return (
     <div className={`news-container ${showSidebar ? 'show-sidebar' : ''}`}>
       <Header onSearch={handleSearch} onFilter={handleFilter} />
@@ -61,6 +76,7 @@ const News = () => {
                   <div className="news-item-title">{news.title}</div>
                   <div className="news-item-description">{news.description}</div>
                 </a>
+                <FaHeart className="favorite-icon" onClick={() => handleFavoriteClick(index)} />
               </li>
             ))}
           </ul>
@@ -68,6 +84,8 @@ const News = () => {
           <p>No news articles found.</p>
         )}
       </div>
+      {/* Render the sign-up prompt if showSignUpPrompt is true */}
+      {showSignUpPrompt && <SignUpPrompt onClose={handleSignUpPromptClose} />}
     </div>
   );
 };
