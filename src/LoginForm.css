@@ -1,0 +1,84 @@
+/* LoginForm.css */
+
+.login-form-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+  }
+  
+  .login-form-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-form-container .form-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .login-form-container label {
+    font-weight: bold;
+    color: #333;
+    width: 100px; /* Fixed width for labels */
+  }
+  
+  .login-form-container input[type="text"],
+  .login-form-container input[type="password"] {
+    padding: 10px;
+    margin-left: 10px; /* Add margin between label and input field */
+    flex: 1; /* Flex to fill remaining space */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .login-form-container button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .login-form-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .login-form-container p {
+    text-align: center;
+  }
+  
+  .login-form-container h2 {
+    margin-bottom: 20px; /* Add space between title and form */
+    font-size: 24px;
+    color: #333;
+    text-align: center; /* Center horizontally */
+  }
+  
+  .close-button {
+    padding: 5px; /* Adjust padding as needed */
+    font-size: 16px; /* Adjust font size as needed */
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: auto; /* Set width to auto to dynamically adjust based on content */
+  }
+  
+  .close-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  

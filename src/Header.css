@@ -1,4 +1,5 @@
 /* Header.css */
+
 .header {
   background-color: #bb1919; /* BBC red */
   color: #fff;
@@ -62,7 +63,15 @@
 .buttons button:hover {
   text-decoration: underline;
 }
-/* Header.css */
+
+/* New style for Logout button */
+.logout-button {
+ 
+  margin-right: 10px; /* Add some margin between Logout button and other buttons */
+  
+}
+
+/* Modal styles */
 .modal {
   position: fixed;
   top: 0;
