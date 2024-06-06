@@ -19,7 +19,6 @@ const UserRegistrationForm = () => {
 
   const handleLogin = async () => {
     try {
-      console.log('Attempting login...');
       const response = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
         headers: {
@@ -27,25 +26,21 @@ const UserRegistrationForm = () => {
         },
         body: JSON.stringify({ email, password })
       });
-  
-      console.log('Login response status:', response.status); // Log the response status
-  
+
       if (response.ok) {
         const responseData = await response.json();
-        console.log('Login response:', responseData);
+        setSuccess(responseData.message);
         localStorage.setItem('user', JSON.stringify({ email }));
         console.log('User logged in successfully:', email);
-        return responseData; // Return the response data
       } else {
-        console.log('Login failed');
-        return null; // Return null if login fails
+        const responseData = await response.json();
+        setError(responseData.error || 'Login failed');
       }
     } catch (error) {
       console.error('Error logging in:', error);
-      return null; // Return null if an error occurs
+      setError('Failed to login');
     }
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();

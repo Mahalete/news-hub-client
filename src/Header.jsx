@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Header.css'; // Import CSS file for styling
 import FilterDropdown from './FilterDropdown'; // Import FilterDropdown component
 import SearchBar from './SearchBar'; // Import SearchBar component
-import LogoutButton from './LogoutButton'; // Import LogoutButton component
 import UserRegistrationForm from './UserRegistrationForm'; // Import UserRegistrationForm component
 import LoginForm from './LoginForm'; // Import LoginForm component
 
@@ -12,40 +12,31 @@ const Header = ({ onFilter, onSearch }) => {
   const [showLoginForm, setShowLoginForm] = useState(false); // State to control login form visibility
   const [error, setError] = useState('');
 
-  const handleSignUpClick = () => {
-    setShowSignUp(true); // Show the sign-up modal
-  };
-
-  const handleLoginClick = () => {
-    setShowLoginForm(true); // Show the login form
-  };
-
+  // Function to handle user login
   const handleLogin = async (email, password) => {
     try {
       console.log('Login button clicked');
       console.log('Attempting login with:', { email, password });
 
-      const response = await fetch('http://localhost:5000/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      const response = await axios.post('http://localhost:5000/api/login', {
+        email,
+        password,
       });
 
       console.log('Response status:', response.status);
 
-      if (response.ok) {
-        const responseData = await response.json();
+      if (response.status === 200) {
+        const responseData = response.data;
         console.log('Response data:', responseData);
         const username = email.substring(0, email.indexOf('@')); // Extract username from email
         const userObject = { email: email, displayName: username }; // Create user object
         setUser(userObject); // Set user state
         localStorage.setItem('user', JSON.stringify(userObject)); // Save user to localStorage
+        localStorage.setItem('firebaseToken', responseData.token); // Store Firebase ID token in localStorage
         console.log('User logged in successfully:', userObject);
         setShowLoginForm(false); // Hide the login form after successful login
       } else {
-        const responseData = await response.json();
+        const responseData = response.data;
         console.log('Login failed:', responseData);
         setError(responseData.error || 'Login failed');
       }
@@ -55,9 +46,52 @@ const Header = ({ onFilter, onSearch }) => {
     }
   };
 
-  const handleLogout = () => {
-    setUser(null); // Reset user state to null
-    localStorage.removeItem('user'); // Remove user from localStorage
+  // Function to handle user logout
+  const handleLogout = async () => {
+    try {
+      console.log('Logout button clicked');
+      
+      // Get the Firebase ID token from localStorage
+      const token = localStorage.getItem('firebaseToken');
+
+      // Check if the token exists
+      if (!token) {
+        console.error('Firebase ID token not found');
+        return;
+      }
+
+      // Set the Authorization header with the Firebase ID token
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+
+      // Send a POST request to the logout endpoint with the Authorization header
+      const response = await axios.post('http://localhost:5000/api/logout', {}, config);
+
+      // Check the response status
+      if (response.status === 200) {
+        setUser(null); // Reset user state
+        localStorage.removeItem('user'); // Remove user from localStorage
+        localStorage.removeItem('firebaseToken'); // Remove Firebase ID token from localStorage
+        console.log('User logged out successfully');
+      } else {
+        console.error('Failed to log out:', response.data.error);
+      }
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
+  // Function to handle sign-up modal visibility
+  const handleSignUpClick = () => {
+    setShowSignUp(true);
+  };
+
+  // Function to handle login form visibility
+  const handleLoginClick = () => {
+    setShowLoginForm(true);
   };
 
   // Check if user is already logged in on component mount
@@ -72,19 +106,16 @@ const Header = ({ onFilter, onSearch }) => {
     <header className="header">
       <div className="logo">News Hub</div>
       <div className="header-right">
-        {/* Render the FilterDropdown component */}
         <FilterDropdown onSelectCategory={onFilter} />
-        {/* Render the SearchBar component */}
         <div className="search-bar-container">
           <SearchBar onSearch={onSearch} />
         </div>
         <div className="buttons">
-          {/* Conditionally render based on user state */}
           {user ? (
             <div className="user-info">
               <div>Welcome, {user.displayName}</div>
               <div className="logout-button-container">
-                <LogoutButton onLogout={handleLogout} /> {/* Integrate LogoutButton component */}
+                <button className="button" onClick={handleLogout}>Logout</button>
               </div>
             </div>
           ) : (
@@ -95,21 +126,17 @@ const Header = ({ onFilter, onSearch }) => {
           )}
         </div>
       </div>
-      {/* Conditionally render the UserRegistrationForm modal */}
       {showSignUp && (
         <div className="modal">
-          {/* Render the UserRegistrationForm component */}
           <UserRegistrationForm onClose={() => setShowSignUp(false)} />
           <button className="close-button" onClick={() => setShowSignUp(false)}>Close</button>
         </div>
       )}
-      {/* Conditionally render the login form */}
       {showLoginForm && (
         <div className="modal">
           <LoginForm onLogin={handleLogin} onClose={() => setShowLoginForm(false)} />
         </div>
       )}
-      {/* Display error message */}
       {error && <p className="error">{error}</p>}
     </header>
   );
