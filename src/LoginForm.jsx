@@ -1,18 +1,20 @@
 // LoginForm.jsx
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './LoginForm.css';
+import { UserContext } from './UserContext'; // Import the UserContext
 
-const LoginForm = ({ onLogin, onClose }) => {
+const LoginForm = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { setUser } = useContext(UserContext); // Access setUser from the context
 
   const handleLogin = async () => {
     try {
       console.log('Login button clicked');
       console.log('Attempting login with:', { email, password });
-
+  
       const response = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
         headers: {
@@ -20,15 +22,21 @@ const LoginForm = ({ onLogin, onClose }) => {
         },
         body: JSON.stringify({ email, password }),
       });
-
+  
       console.log('Response status:', response.status);
-
+  
       if (response.ok) {
         const responseData = await response.json();
         console.log('Response data:', responseData);
-        localStorage.setItem('user', JSON.stringify({ email }));
-        console.log('User logged in successfully:', email);
-        onLogin(email, password); // Call the onLogin prop
+        const user = {
+          ...responseData.user,
+          username: responseData.user.email.split('@')[0]
+        };
+         // Extract username from email
+        setUser(user); // Set user state using the setUser function from context
+        localStorage.setItem('user', JSON.stringify(user)); // Save user to localStorage
+        console.log('User logged in successfully:', user);
+
         onClose(); // Close the modal on successful login
       } else {
         const responseData = await response.json();
@@ -40,6 +48,7 @@ const LoginForm = ({ onLogin, onClose }) => {
       setError('Failed to login');
     }
   };
+  
 
   return (
     <div className="login-form-container">

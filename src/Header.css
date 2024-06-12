@@ -3,7 +3,7 @@
 .header {
   background-color: #bb1919; /* BBC red */
   color: #fff;
-  padding: 0 10px;
+  padding: 10px;
   font-family: Arial, sans-serif;
   position: fixed; /* Make the header fixed on top */
   top: 0; /* Stick the header to the top of the viewport */
@@ -24,14 +24,15 @@
   font-size: 25px;
   font-weight: bold;
   text-transform: uppercase;
-  margin: 0 auto; /* Center the logo horizontally */
-  padding-left: 35rem;
-  padding-top: 2rem;
 }
 
 .header-right {
   display: flex;
   align-items: center;
+}
+
+.icons-container {
+  display: flex;
 }
 
 .filter-icon,
@@ -62,13 +63,6 @@
 
 .buttons button:hover {
   text-decoration: underline;
-}
-
-/* New style for Logout button */
-.logout-button {
- 
-  margin-right: 10px; /* Add some margin between Logout button and other buttons */
-  
 }
 
 /* Modal styles */

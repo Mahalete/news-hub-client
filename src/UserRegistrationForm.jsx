@@ -12,7 +12,7 @@ const UserRegistrationForm = () => {
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
-
+  // TODO: Remove login handler from UserRegistrationForm
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
@@ -117,7 +117,7 @@ const UserRegistrationForm = () => {
       {error && error.includes('already signed up') && (
         <p className="login-instead">Already have an account? Please log in instead.</p>
       )}
-      {showLoginForm && <LoginForm onLogin={handleLogin} onClose={() => setShowLoginForm(false)} />}
+      {showLoginForm && <LoginForm onClose={() => setShowLoginForm(false)} />}
     </div>
   );
 };

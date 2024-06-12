@@ -1,9 +1,10 @@
-import firebase from "firebase/app";
-import "firebase/firestore"; // Import Firestore if you're using it
+import firebase from 'firebase/app';
+import 'firebase/firestore'; // If you are using Firestore
+
 
 // Initialize Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyByF5M5FETsEmXi8K9npn1m3C0gQzvFGRE",
+    apiKey:"AIzaSyByF5M5FETsEmXi8K9npn1m3C0gQzvFGRE",
     authDomain: "newshub-01.firebaseapp.com",
     projectId: "newshub-01",
     storageBucket: "newshub-01.appspot.com",
@@ -18,4 +19,3 @@ firebase.initializeApp(firebaseConfig);
 //firebase = getAnalytics(app);
 
 export default firebase;
-
