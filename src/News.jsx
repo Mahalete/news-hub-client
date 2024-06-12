@@ -1,58 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Header from './Header';
 import FilterDropdown from './FilterDropdown';
 import './News.css';
+import { UserContext } from './UserContext';
 import { FaHeart } from 'react-icons/fa';
 import SignUpPrompt from './SignUpPrompt';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const News = () => {
+  const { user } = useContext(UserContext);
   const [newsData, setNewsData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showSidebar, setShowSidebar] = useState(false);
   const [showSignUpPrompt, setShowSignUpPrompt] = useState(false);
   const [favorites, setFavorites] = useState([]);
-  const [user, setUser] = useState(null); // State to hold user authentication status
+  const [favorited, setFavorited] = useState([]);
 
   useEffect(() => {
-    console.log('Fetching news data...');
     fetchNews();
-  }, [searchTerm, selectedCategory]);
-
-  useEffect(() => {
-    console.log('Fetching favorites and checking user login...');
-    fetchFavorites();
-
-    // Check if the user is already logged in
-    const loggedInUser = localStorage.getItem('user');
-    if (loggedInUser) {
-      const parsedUser = JSON.parse(loggedInUser);
-      // Verify user with backend or Firebase authentication
-      verifyUser(parsedUser)
-        .then(isValidUser => {
-          if (isValidUser) {
-            console.log('User already logged in:', parsedUser);
-            setUser(parsedUser);
-          } else {
-            console.log('Invalid user detected, clearing user data...');
-            localStorage.removeItem('user');
-            setUser(null);
-          }
-        });
+    if (user) {
+      console.log("should be user favorite")
+      fetchFavorites();
     }
-  }, []);
-
-  const verifyUser = async (user) => {
-    // Make an API call to verify the user with Firebase authentication
-    try {
-      const response = await axios.post('/api/verifyUser', { email: user.email });
-      return response.status === 200;
-    } catch (error) {
-      console.error('Error verifying user:', error);
-      return false;
-    }
-  };
+  }, [searchTerm, selectedCategory, user]);
 
   const fetchNews = () => {
     let url = 'https://newsdata.io/api/1/latest?apikey=pub_43336635b2f1ccedd88c458bd9d3939ef3aaf&language=en,fi';
@@ -74,18 +47,37 @@ const News = () => {
       });
   };
 
-  const fetchFavorites = () => {
-    console.log('User in fetchFavorites:', user);
-    if (user) {
-      // Fetch user's favorites from the backend API
-      axios.get(`/api/favorites/${user.id}`)
-        .then(response => {
-          setFavorites(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching favorite articles:', error);
-        });
+  const fetchFavorites = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/favorites/${user.uid}`);
+      setFavorites(response.data);
+      setFavorited(response.data.map(f => f.article_id))
+
+     // setNewsData(newsData.filter(n => !favorited.includes(n.article_id)))
+    } catch (error) {
+      console.error('Error fetching favorite articles:', error);
     }
+  };
+
+  const handleFavoriteClick = (news) => {
+    if (!user || !user.uid) {
+      toast.error('Please log in first!');
+      return;
+    }
+
+    const { article_id, title, link, description } = news;
+    const article = { article_id, title, link, description };
+    const data = { userId: user.uid, favorites: [article] };
+
+    axios.post('http://localhost:5000/api/favorites', data)
+      .then(() => {
+        toast.success('Article saved to favorites!');
+        fetchFavorites();
+        setNewsData(newsData.filter(n => article_id !== n.article_id))
+      })
+      .catch(error => {
+        console.error('Error saving article as favorite:', error);
+      });
   };
 
   const handleSearch = (value) => {
@@ -100,39 +92,40 @@ const News = () => {
     setShowSidebar(!showSidebar);
   };
 
-  const handleFavoriteClick = (news) => {
-    console.log('handleFavoriteClick called with news:', news);
-  
-    if (!user) {
-      setShowSignUpPrompt(true); // Prompt the user to log in if not logged in
-      return;
-    }
-  
-    console.log('User is logged in:', user);
-  
-    // Send a POST request to save the favorite article
-    axios.post('/api/saveFavorite', { userId: user.id, article: news })
-      .then(() => {
-        console.log('Article saved as favorite:', news.title);
-        fetchFavorites(); // Refresh favorites list
-      })
-      .catch(error => {
-        console.error('Error saving article as favorite:', error);
-      });
-  };
-  
-  
-
-
   const handleSignUpPromptClose = () => {
     setShowSignUpPrompt(false);
   };
-
+  
   return (
     <div className={`news-container ${showSidebar ? 'show-sidebar' : ''}`}>
       <Header onSearch={handleSearch} onFilter={handleFilter} />
       <FilterDropdown onSelectCategory={handleFilter} />
+      {
+         user && favorites.length > 0 && (
+          <div className="news-content">
+            <h3>Favourites</h3>
+              <ul className="news-list">
+                      {favorites.map((news, index) => (
+                        <li className="news-item" key={index}>
+                          <a href={news.link} className="news-item-link" target="_blank" rel="noopener noreferrer">
+                            <div className="news-item-title">{news.title}</div>
+                            <div className="news-item-description">{news.description}</div>
+                          </a>
+                          <FaHeart
+                            className="favorite-icon"
+                            color={favorited.includes(news.article_id)? "#f00": "#777"}
+                            onClick={() => handleFavoriteClick(news)}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+              </div>
+          )
+      }
+     
+     
       <div className="news-content">
+      <h3>All news</h3>
         {newsData.length > 0 ? (
           <ul className="news-list">
             {newsData.map((news, index) => (
@@ -143,6 +136,7 @@ const News = () => {
                 </a>
                 <FaHeart
                   className="favorite-icon"
+                  color={favorited.includes(news.article_id)? "#f00": "#777"}
                   onClick={() => handleFavoriteClick(news)}
                 />
               </li>
@@ -153,6 +147,7 @@ const News = () => {
         )}
       </div>
       {showSignUpPrompt && <SignUpPrompt onClose={handleSignUpPromptClose} />}
+      <ToastContainer />
     </div>
   );
 };
