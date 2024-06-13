@@ -1,15 +1,15 @@
 /* Header.css */
 
 .header {
-  background-color: #bb1919; /* BBC red */
+  background-color: #bb1919; 
   color: #fff;
   padding: 10px;
   font-family: Arial, sans-serif;
   position: fixed; /* Make the header fixed on top */
   top: 0; /* Stick the header to the top of the viewport */
-  left: 0; /* Align the header to the left */
-  right: 0; /* Align the header to the right */
-  z-index: 1000; /* Ensure the header is above other content */
+  left: 0; 
+  right: 0; 
+  z-index: 1000; 
 }
 
 .header-container {
@@ -18,12 +18,18 @@
   align-items: center;
   max-width: 1280px;
   margin: 0 auto;
+  padding: 0 15px; 
 }
 
 .logo {
   font-size: 25px;
   font-weight: bold;
   text-transform: uppercase;
+  flex: 1; /* Allow logo to take available space */
+  text-align: center; /* Center the logo */
+  display: flex;
+  align-items: center; /* Center the logo vertically */
+  justify-content: center; /* Center the logo horizontally */
 }
 
 .header-right {
@@ -44,7 +50,9 @@
 }
 
 .buttons {
-  margin-left: auto; /* Pushes buttons to the right */
+  margin-left: auto; 
+  display: flex;
+  align-items: center; 
 }
 
 .buttons button {
@@ -54,11 +62,11 @@
   padding: 8px 16px;
   font-size: 14px;
   cursor: pointer;
-  margin-left: 10px; /* Add margin between buttons */
+  margin-left: 10px; 
 }
 
 .buttons button:last-child {
-  margin-left: 0; /* Remove margin from last button */
+  margin-left: 0; 
 }
 
 .buttons button:hover {
@@ -83,4 +91,33 @@
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo {
+    margin-bottom: 10px; /* Add some space between the logo and the rest */
+  }
+
+  .header-right {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .buttons {
+    margin-left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .buttons button {
+    margin-left: 5px;
+    margin-right: 5px; 
+  }
 }

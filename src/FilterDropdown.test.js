@@ -1,4 +1,6 @@
+import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
+import FilterDropdown from './FilterDropdown';
 
 test('clicking on filter icon toggles the sidebar', async () => {
   // Render the FilterDropdown component
@@ -12,6 +14,14 @@ test('clicking on filter icon toggles the sidebar', async () => {
 
   // Wait for the sidebar to be rendered
   await waitFor(() => {
-    expect(queryAllByRole('listitem')).toHaveLength(4); // Assuming there are 4 categories
+    expect(queryAllByRole('listitem')).toHaveLength(4); 
+  });
+
+  // Click on the filter icon again to close the sidebar
+  fireEvent.click(getByTestId('filter-icon'));
+
+  // Wait for the sidebar to be closed
+  await waitFor(() => {
+    expect(queryAllByRole('listitem')).toHaveLength(0);
   });
 });

@@ -4,88 +4,52 @@
   top: 90px; /* Adjust this value to match the height of your header */
   left: 0;
   width: 250px; /* Adjust the width as needed */
-  background-color: #f5f5f5;
-  z-index: 2;
-  overflow-y: auto;
+  background-color: #f5f5f5; /* Background color similar to BBC */
+  z-index: 2; /* Ensure the sidebar is above other content */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
   padding-left: 0;
-  margin-top: 100px; 
+  margin-top: 100px; /* Adjust the top margin as needed */
   padding-top: 20px;
 }
+
 .close-button {
   position: absolute;
-  top: 6px;
-  right: 10px;
-  font-size: 20px; 
+  margin-bottom: 10px;
+  top: 6px; 
+  right: 10px; 
+  width: 20px;
+  height: 20px; 
+  font-size: 16px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  background: none; 
-  border: none; 
-  outline: none; 
+  background: none;
+  border: none;
+  outline: none;
+  color: #bb1919; 
 }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar li {
-    padding: 12px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Add transition effect for hover */
-  }
-  
-  .sidebar li:hover {
-    background-color: #e0e0e0; /* Change background color on hover */
-  }
-  
-  /* Adjust font styles */
-  .sidebar li {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333; /* Text color similar to BBC */
-  }
-  
-  /* Adjust hover color */
-  .sidebar li:hover {
-    color: #000; /* Hover color similar to BBC */
-  }
-/* Sidebar.css */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 250px; /* Adjust the width of the sidebar as needed */
-    background-color: #f5f5f5; /* Background color similar to BBC */
-    z-index: 2; /* Ensure the sidebar is above other content */
-    overflow-y: auto; /* Enable vertical scrolling if needed */
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar li {
-    padding: 12px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Add transition effect for hover */
-  }
-  
-  .sidebar li:hover {
-    background-color: #e0e0e0; /* Change background color on hover */
-  }
-  
-  /* Adjust font styles */
-  .sidebar li {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333; /* Text color similar to BBC */
-  }
-  
-  /* Adjust hover color */
-  .sidebar li:hover {
-    color: #000; /* Hover color similar to BBC */
-  }
-  
+
+.close-button:hover {
+  color: #ff0000;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; 
+  font-size: 16px;
+  font-weight: bold;
+  color: #333; 
+}
+
+.sidebar li:hover {
+  background-color: #e0e0e0; 
+  color: #000; 
+}

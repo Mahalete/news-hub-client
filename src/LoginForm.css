@@ -32,12 +32,12 @@
   
   .login-form-container input[type="text"],
   .login-form-container input[type="password"] {
+    flex: 2; 
     padding: 10px;
-    margin-left: 10px; /* Add margin between label and input field */
-    flex: 1; /* Flex to fill remaining space */
     font-size: 16px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 4px;
+    width: 100%; 
   }
   
   .login-form-container button {
@@ -81,4 +81,8 @@
   .close-button:hover {
     background-color: #0056b3; /* Darker blue on hover */
   }
-  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }

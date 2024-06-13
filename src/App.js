@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import News from './News';
-import UserDashboard from './UserDashboard';
+
 import { UserProvider } from './UserContext';
 
 function App({ firebaseApp }) {
@@ -27,9 +27,8 @@ function App({ firebaseApp }) {
   }, [user]);
 
   const checkFavoriteNews = async () => {
-    // You need to implement logic to check if the user has favorite news
-    // This could involve making a request to your backend to fetch the user's favorite news
-    // For now, let's assume there are no favorite news for the user
+    
+    // Assumee there are no favorite news for the user
     const hasFavorites = false;
     setHasFavoriteNews(hasFavorites);
   };
@@ -37,8 +36,7 @@ function App({ firebaseApp }) {
   return (
     <div className="App">
       <UserProvider value={{ user, setUser }}>
-        {/* Render UserDashboard if user is logged in and has favorite news, otherwise render News */}
-        {/*user ? <UserDashboard user={user} /> : <News />*/}
+        
         <News/>
       </UserProvider>
     </div>

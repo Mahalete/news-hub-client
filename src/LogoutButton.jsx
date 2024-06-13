@@ -8,4 +8,4 @@ const LogoutButton = ({ onLogout }) => {
   );
 };
 
-export default LogoutButton; // Ensure the component is exported as default
+export default LogoutButton; 

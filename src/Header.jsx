@@ -17,7 +17,7 @@ const Header = ({ onFilter, onSearch }) => {
   const handleSignUpClick = () => {
     setShowSignUp(true); // Show the sign-up modal
   };
-  // TODO: Remove login handler from Header.jsx
+ 
   const handleLoginClick = () => {
     setShowLoginForm(true); // Show the login form
   };
@@ -28,40 +28,6 @@ const Header = ({ onFilter, onSearch }) => {
     console.log('Logout successful'); // Add console log for successful logout
   };
 
-  const handleLogin = async (email, password) => {
-    try {
-      console.log('Login button clicked');
-      console.log('Attempting login with:', { email, password });
-
-      const response = await fetch('http://localhost:5000/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      console.log('Response status:', response.status);
-
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log('Response data:', responseData);
-        const username = email.substring(0, email.indexOf('@')); // Extract username from email
-        const userObject = {...responseData.user, displayName: username }; // Create user object
-        setUser(userObject); // Set user state using the setUser function from context
-        localStorage.setItem('user', JSON.stringify(userObject)); // Save user to localStorage
-        console.log('User logged in successfully:', userObject);
-        setShowLoginForm(false); // Hide the login form after successful login
-      } else {
-        const responseData = await response.json();
-        console.log('Login failed:', responseData);
-        setError(responseData.error || 'Login failed');
-      }
-    } catch (error) {
-      console.error('Error logging in:', error);
-      setError('Failed to login');
-    }
-  };
 
   // Check if user is already logged in on component mount
   useEffect(() => {
@@ -114,8 +80,8 @@ const Header = ({ onFilter, onSearch }) => {
 };
 
 Header.propTypes = {
-  onFilter: PropTypes.func.isRequired, // Assuming onFilter is a function and required
-  onSearch: PropTypes.func.isRequired, // Assuming onSearch is a function and required
+  onFilter: PropTypes.func.isRequired, // onFilter is a function and required
+  onSearch: PropTypes.func.isRequired, //  onSearch is a function and required
 };
 
 export default Header;
