@@ -1,10 +1,17 @@
-/* News.css */
-.news-container {
-  max-width: 650px;
-  margin: 80px auto 0; /* Adjust the margin-top value to match the height of your header */
+/* News Content */
+.news-content {
+  display: flex;
+  max-width: 100%;
+  margin: 80px auto 0;
   padding: 10px;
-  position: relative; /* Ensure the news container maintains its position context */
-  z-index: 70; /* Set a lower z-index for the news content */
+  position: relative;
+  z-index: 70; 
+}
+
+/* All News Section */
+.all-news {
+  flex: 3; /* Takes up 3/4 of the container */
+  padding-right: 10px; 
 }
 
 .news-list {
@@ -16,6 +23,10 @@
 .news-item {
   margin-bottom: 20px;
   position: relative; /* Ensure relative positioning for the heart icon */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
 }
 
 .news-item-title {
@@ -36,15 +47,39 @@
 }
 
 .news-item-link:hover {
-  text-decoration: underline; /* Underline link on hover */
+  text-decoration: underline; 
 }
 
 /* Style heart icon */
 .favorite-icon {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 10px;
+  right: 10px;
   cursor: pointer;
+}
+
+/* Favorites Section */
+.favorites {
+  flex: 1; 
+  padding-left: 10px; 
+}
+
+.fancy-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #bb1919; 
+  margin: 20px 0;
+  padding: 10px;
+  background-color: #f0f0f0; 
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.fancy-title:hover {
+  background-color: #e6e6e6; /* Slightly darker background on hover */
+  color: #bb1919;
 }
 
 .login-required-message {
@@ -55,4 +90,53 @@
   margin-bottom: 15px;
   text-align: center;
   color: #333;
+}
+
+/* Scrollable section for all favorites */
+.scrollable {
+  max-height: 300px;
+  overflow-y: auto; 
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .news-content {
+    flex-direction: column; /* Stack elements vertically */
+    padding: 5px;
+  }
+
+  .all-news {
+    padding-right: 0;
+  }
+
+  .favorites {
+    padding-left: 0;
+  }
+
+  .favorite-icon {
+    top: 5px;
+    right: 5px;
+  }
+
+  .news-item {
+    padding: 10px;
+  }
+
+  .news-item-title {
+    font-size: 16px;
+  }
+
+  .news-item-description {
+    font-size: 14px;
+  }
+
+  .fancy-title {
+    font-size: 20px;
+    padding: 8px;
+    margin: 15px 0;
+  }
 }

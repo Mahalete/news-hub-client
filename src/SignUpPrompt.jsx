@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-//import './SignUpPrompt.css'; // Import CSS file for styling
+import './SignUpPrompt.css'; // Ensure to import your CSS file
 
 const SignUpPrompt = ({ onClose }) => {
   const [email, setEmail] = useState('');
@@ -22,7 +22,10 @@ const SignUpPrompt = ({ onClose }) => {
 
   return (
     <div className="signup-form-container">
-      <h2>Sign Up</h2>
+      <div className="form-header">
+        <h2>Sign Up</h2>
+        <button className="close-button" onClick={onClose}>Close</button>
+      </div>
       <div className="form-group">
         <label htmlFor="email">Email</label>
         <input
@@ -44,8 +47,7 @@ const SignUpPrompt = ({ onClose }) => {
         />
       </div>
       <button className="button" onClick={handleSignUp}>Sign Up</button>
-      <button className="close-button" onClick={onClose}>Close</button>
-      {message && <p>{message}</p>}
+      {message && <p className="message">{message}</p>}
     </div>
   );
 };

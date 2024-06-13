@@ -18,12 +18,18 @@ const News = () => {
   const [showSignUpPrompt, setShowSignUpPrompt] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [favorited, setFavorited] = useState([]);
+  const [allFavorites, setAllFavorites] = useState([]);
 
   useEffect(() => {
     fetchNews();
     if (user) {
-      console.log("should be user favorite")
       fetchFavorites();
+    } else {
+      // Clear favorites and news data when user logs out
+      setFavorites([]);
+      setFavorited([]);
+      setAllFavorites([]);
+      setNewsData([]);
     }
   }, [searchTerm, selectedCategory, user]);
 
@@ -50,10 +56,12 @@ const News = () => {
   const fetchFavorites = async () => {
     try {
       const response = await axios.get(`http://localhost:5000/api/favorites/${user.uid}`);
-      setFavorites(response.data);
-      setFavorited(response.data.map(f => f.article_id))
+      const favoriteArticles = response.data;
+      setFavorites(favoriteArticles);
+      setFavorited(favoriteArticles.map(f => f.article_id));
 
-     // setNewsData(newsData.filter(n => !favorited.includes(n.article_id)))
+      // Combine top favorites and remaining favorites
+      setAllFavorites(favoriteArticles);
     } catch (error) {
       console.error('Error fetching favorite articles:', error);
     }
@@ -95,57 +103,62 @@ const News = () => {
   const handleSignUpPromptClose = () => {
     setShowSignUpPrompt(false);
   };
-  
+
   return (
     <div className={`news-container ${showSidebar ? 'show-sidebar' : ''}`}>
       <Header onSearch={handleSearch} onFilter={handleFilter} />
       <FilterDropdown onSelectCategory={handleFilter} />
-      {
-         user && favorites.length > 0 && (
-          <div className="news-content">
-            <h3>Favourites</h3>
-              <ul className="news-list">
-                      {favorites.map((news, index) => (
-                        <li className="news-item" key={index}>
-                          <a href={news.link} className="news-item-link" target="_blank" rel="noopener noreferrer">
-                            <div className="news-item-title">{news.title}</div>
-                            <div className="news-item-description">{news.description}</div>
-                          </a>
-                          <FaHeart
-                            className="favorite-icon"
-                            color={favorited.includes(news.article_id)? "#f00": "#777"}
-                            onClick={() => handleFavoriteClick(news)}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-              </div>
-          )
-      }
-     
-     
+
       <div className="news-content">
-      <h3>All news</h3>
-        {newsData.length > 0 ? (
-          <ul className="news-list">
-            {newsData.map((news, index) => (
-              <li className="news-item" key={index}>
-                <a href={news.link} className="news-item-link" target="_blank" rel="noopener noreferrer">
-                  <div className="news-item-title">{news.title}</div>
-                  <div className="news-item-description">{news.description}</div>
-                </a>
-                <FaHeart
-                  className="favorite-icon"
-                  color={favorited.includes(news.article_id)? "#f00": "#777"}
-                  onClick={() => handleFavoriteClick(news)}
-                />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No news articles found.</p>
+        <div className="all-news">
+          <h2 className="fancy-title">All News</h2>
+          {newsData.length > 0 ? (
+            <ul className="news-list">
+              {newsData.map((news, index) => (
+                <li className="news-item" key={index}>
+                  <a href={news.link} className="news-item-link" target="_blank" rel="noopener noreferrer">
+                    <div className="news-item-title">{news.title}</div>
+                    <div className="news-item-description">{news.description}</div>
+                  </a>
+                  {user && (
+                    <FaHeart
+                      className="favorite-icon"
+                      color={favorited.includes(news.article_id) ? "#f00" : "#777"}
+                      onClick={() => handleFavoriteClick(news)}
+                    />
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No news articles found.</p>
+          )}
+        </div>
+
+        {user && (
+          <div className="favorites">
+            <h2 className="fancy-title">Favorites</h2>
+            <div className="scrollable">
+              <ul className="news-list">
+                {allFavorites.map((news, index) => (
+                  <li className="news-item" key={index}>
+                    <a href={news.link} className="news-item-link" target="_blank" rel="noopener noreferrer">
+                      <div className="news-item-title">{news.title}</div>
+                      <div className="news-item-description">{news.description}</div>
+                    </a>
+                    <FaHeart
+                      className="favorite-icon"
+                      color={favorited.includes(news.article_id) ? "#f00" : "#777"}
+                      onClick={() => handleFavoriteClick(news)}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         )}
       </div>
+
       {showSignUpPrompt && <SignUpPrompt onClose={handleSignUpPromptClose} />}
       <ToastContainer />
     </div>
